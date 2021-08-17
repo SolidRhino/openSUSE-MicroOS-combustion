@@ -1,0 +1,48 @@
+#!/bin/bash
+# combustion: network
+# Redirect output to the console
+exec > >(exec tee -a /dev/tty0) 2>&1
+
+## Copy config to /boot/efi
+cp extraconfig.txt /boot/efi/
+
+## Mount /var and /home so user can be created smoothly
+mount /var
+mount /home
+
+## Make user
+useradd -m server
+echo 'server:$6$Ez61Z/8.r1IirPhg$q0CPfI4VKg028qaqlS6E/4Jikdj.JStoJDOXYI/U8OKxPr0fKC1fAk01G0No9q2nxuVFitWWiD7kYKCeq9DZe1' | chpasswd -e
+
+## Add user to sudoers
+echo "server ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/server
+
+## Create ssh folder and populate authorized_keys for remote sshd
+mkdir -pm700 /home/server/.ssh
+chown server:users -R /home/server/.ssh
+cat server.pub >> /home/server/.ssh/authorized_keys
+systemctl enable sshd.service
+
+## Setup vconsole so framebuffer console has right font/keyboard layout (Optional)
+cp vconsole.conf /etc/vconsole.conf
+
+## Disable IPv6
+cp 90-disableipv6.conf /etc/sysctl.d/
+
+## Enable i2c on boot
+cp 10-i2c.conf /etc/modules-load.d/
+
+## Install fishshell and set it as standard shell
+zypper --non-interactive install toolbox i2c-tools docker docker-compose
+
+## Add mount point
+mkdir -pm700 /mnt/data
+cat fstab.bash >> /etc/fstab
+
+## Reboot after setup
+cp firstbootreboot.service /etc/systemd/system/
+systemctl enable firstbootreboot.service
+
+## Clear up mounts
+umount /var
+umount /home

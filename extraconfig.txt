@@ -1,0 +1,4 @@
+hdmi_force_hotplug=1
+
+# Enable I2C access from Linux
+dtparam=i2c_arm=on

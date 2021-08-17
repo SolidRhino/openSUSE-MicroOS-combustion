@@ -1,0 +1,1 @@
+UUID=1d65146e-ad0e-40ad-9c96-906c68eb0e3c /mnt/data ext4 noauto,x-systemd.automount,user,umask=0000 0 1
