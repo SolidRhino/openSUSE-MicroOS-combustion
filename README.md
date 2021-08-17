@@ -1,6 +1,4 @@
 # OpenSUSE MicroOS combustion
----
-
 ## Create USB
 
 To create the USB use this code
