@@ -36,10 +36,8 @@ cp 10-i2c.conf /etc/modules-load.d/
 zypper --non-interactive install toolbox i2c-tools docker docker-compose
 systemctl enable docker.service
 
-
 ## Add user server to docker group
 usermod -G docker -a server
-
 
 ## Add mount point
 #mkdir -pm700 /mnt/data
