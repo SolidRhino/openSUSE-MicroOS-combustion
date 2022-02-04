@@ -18,6 +18,9 @@ cp 90-disableipv6.conf /etc/sysctl.d/
 ## Enable i2c on boot
 cp 10-i2c.conf /etc/modules-load.d/
 
+## Install build environment for argon one deamon
+zypper --non-interactive install gcc dtc linux-headers make git
+
 ## Install i2-tools, docker and docker-compose
 zypper --non-interactive install toolbox i2c-tools docker docker-compose
 systemctl enable docker.service
