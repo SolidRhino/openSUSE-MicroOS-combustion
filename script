@@ -3,8 +3,24 @@
 # Redirect output to the console
 exec > >(exec tee -a /dev/tty0) 2>&1
 
+## Set hostname
+hostnamectl set-hostname server
+
 ## Copy config to /boot/efi
 cp extraconfig.txt /boot/efi/
+
+## Setup vconsole so framebuffer console has right font/keyboard layout (Optional)
+cp vconsole.conf /etc/vconsole.conf
+
+## Disable IPv6
+cp 90-disableipv6.conf /etc/sysctl.d/
+
+## Enable i2c on boot
+cp 10-i2c.conf /etc/modules-load.d/
+
+## Install i2-tools, docker and docker-compose
+zypper --non-interactive install toolbox i2c-tools docker docker-compose
+systemctl enable docker.service
 
 ## Mount /var and /home so user can be created smoothly
 mount /var
@@ -22,19 +38,6 @@ mkdir -pm700 /home/server/.ssh
 chown server:users -R /home/server/.ssh
 cat server.pub >> /home/server/.ssh/authorized_keys
 systemctl enable sshd.service
-
-## Setup vconsole so framebuffer console has right font/keyboard layout (Optional)
-cp vconsole.conf /etc/vconsole.conf
-
-## Disable IPv6
-cp 90-disableipv6.conf /etc/sysctl.d/
-
-## Enable i2c on boot
-cp 10-i2c.conf /etc/modules-load.d/
-
-## Install i2-tools, docker and docker-compose
-zypper --non-interactive install toolbox i2c-tools docker docker-compose
-systemctl enable docker.service
 
 ## Add user server to docker group
 usermod -G docker -a server
