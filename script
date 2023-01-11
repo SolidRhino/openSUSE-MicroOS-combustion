@@ -6,12 +6,6 @@ exec > >(exec tee -a /dev/tty0) 2>&1
 ## Set hostname
 hostnamectl set-hostname server
 
-## Setup tailscail
-zypper ar -g -r https://pkgs.tailscale.com/stable/opensuse/tumbleweed/tailscale.repo
-zypper ref
-zypper --non-interactive install tailscale
-systemctl enable --now tailscaled
-
 ## Set timezone
 timedatectl set-timezone Europe/Amsterdam
 
@@ -26,6 +20,15 @@ cp 90-disableipv6.conf /etc/sysctl.d/
 
 ## Enable i2c on boot
 cp 10-i2c.conf /etc/modules-load.d/
+
+## Setup tailscail
+zypper ar -g -r https://pkgs.tailscale.com/stable/opensuse/tumbleweed/tailscale.repo
+zypper ref
+zypper --non-interactive install tailscale
+systemctl enable --now tailscaled
+
+## Authenticate tailscail
+cat secrets/tailscale | xargs tailscale up --authkey
 
 ## Install build environment for argon one deamon
 zypper --non-interactive install gcc dtc linux-headers make git
