@@ -1,10 +1,12 @@
 # OpenSUSE MicroOS combustion
+
 ## Create USB
 
 To create the USB use this code
-```
-mkfs.ext4 /dev/sdY
-e2label /dev/sdY combustion
-mount /dev/sdY /mnt
+
+```bash
+mkfs.ext4 /dev/sdX
+e2label /dev/sdX combustion
+mount /dev/sdX /mnt
 git clone https://github.com/SolidRhino/openSUSE-MicroOS-combustion.git
 ```
