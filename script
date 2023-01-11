@@ -6,6 +6,12 @@ exec > >(exec tee -a /dev/tty0) 2>&1
 ## Set hostname
 hostnamectl set-hostname server
 
+## Setup tailscail
+zypper ar -g -r https://pkgs.tailscale.com/stable/opensuse/tumbleweed/tailscale.repo
+zypper ref
+zypper --non-interactive install tailscale
+systemctl enable --now tailscaled
+
 ## Set timezone
 timedatectl set-timezone Europe/Amsterdam
 
