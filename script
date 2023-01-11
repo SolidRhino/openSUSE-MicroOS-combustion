@@ -33,8 +33,9 @@ mount /var
 mount /home
 
 ## Make user
-useradd -m server
-echo 'server:$6$Ez61Z/8.r1IirPhg$q0CPfI4VKg028qaqlS6E/4Jikdj.JStoJDOXYI/U8OKxPr0fKC1fAk01G0No9q2nxuVFitWWiD7kYKCeq9DZe1' | chpasswd -e
+useradd server --create-home
+#useradd server -m -s /usr/bin/toolbox --root
+#echo 'server:$6$Ez61Z/8.r1IirPhg$q0CPfI4VKg028qaqlS6E/4Jikdj.JStoJDOXYI/U8OKxPr0fKC1fAk01G0No9q2nxuVFitWWiD7kYKCeq9DZe1' | chpasswd -e
 
 ## Add user to sudoers
 echo "server ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/server
