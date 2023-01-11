@@ -6,6 +6,9 @@ exec > >(exec tee -a /dev/tty0) 2>&1
 ## Set hostname
 hostnamectl set-hostname server
 
+## Set timezone
+timedatectl set-timezone Europe/Amsterdam
+
 ## Copy config to /boot/efi
 cp extraconfig.txt /boot/efi/
 
