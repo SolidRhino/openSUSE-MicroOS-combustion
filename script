@@ -22,7 +22,8 @@ cp 90-disableipv6.conf /etc/sysctl.d/
 cp 10-i2c.conf /etc/modules-load.d/
 
 ## Setup tailscail
-zypper ar -g -r https://pkgs.tailscale.com/stable/opensuse/tumbleweed/tailscale.repo
+rpm --import https://pkgs.tailscale.com/stable/opensuse/tumbleweed/repo.gpg
+zypper addrepo -g -r https://pkgs.tailscale.com/stable/opensuse/tumbleweed/tailscale.repo
 zypper ref
 zypper --non-interactive install tailscale
 systemctl enable --now tailscaled
