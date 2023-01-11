@@ -52,6 +52,16 @@ usermod -G docker -a server
 #mkdir -pm700 /mnt/data
 #cat fstab.bash >> /etc/fstab
 
+## Install Argon One Daemon
+cd /opt
+git clone https://gitlab.com/DarkElvenAngel/argononed.git
+cd argononed
+git switch 0.3.x
+# cd OS
+# ln -s opensuse opensuse-microos
+# cd ..
+./install
+
 ## Reboot after setup
 cp firstbootreboot.service /etc/systemd/system/
 systemctl enable firstbootreboot.service
