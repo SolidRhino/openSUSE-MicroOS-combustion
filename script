@@ -21,31 +21,21 @@ cp vconsole.conf /etc/vconsole.conf
 ## Enable i2c on boot
 cp 10-i2c.conf /etc/modules-load.d/
 
-## Setup tailscail
-rpm --import https://pkgs.tailscale.com/stable/opensuse/tumbleweed/repo.gpg
-zypper addrepo -g -r https://pkgs.tailscale.com/stable/opensuse/tumbleweed/tailscale.repo
-zypper ref
-zypper --non-interactive install tailscale
-systemctl enable --now tailscaled
-
-## Authenticate tailscail
-cat secrets/tailscale | xargs tailscale up --authkey
-
-## Install build environment for argon one deamon
-zypper --non-interactive install gcc dtc linux-headers make git
-
 ## Install i2-tools, docker and docker-compose
-zypper --non-interactive install toolbox i2c-tools docker docker-compose
+zypper --non-interactive install toolbox i2c-tools docker docker-compose bash-completion
 systemctl enable docker.service
+
+## Disable root
+	
+passwd -d root
 
 ## Mount /var and /home so user can be created smoothly
 mount /var
 mount /home
 
 ## Make user
-useradd server --create-home
-#useradd server -m -s /usr/bin/toolbox --root
-#echo 'server:$6$Ez61Z/8.r1IirPhg$q0CPfI4VKg028qaqlS6E/4Jikdj.JStoJDOXYI/U8OKxPr0fKC1fAk01G0No9q2nxuVFitWWiD7kYKCeq9DZe1' | chpasswd -e
+useradd server --create-home -s /bin/bash -g users
+echo 'server:$6$Lmx49O.WVigkrQo5$5.ktW4939gS4zhsnulvxe1EnIXDcPz/yQyX5R41Ml811.l6xPwG.onYZCK5/X.bSUSfY34hEaxKAJ2sVkHpBw0' | chpasswd -e
 
 ## Add user to sudoers
 echo "server ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/server
@@ -59,20 +49,6 @@ systemctl enable sshd.service
 ## Add user server to docker group
 usermod -G docker -a server
 
-## Add mount point
-#mkdir -pm700 /mnt/data
-#cat fstab.bash >> /etc/fstab
-
-## Install Argon One Daemon
-cd /opt
-git clone https://gitlab.com/DarkElvenAngel/argononed.git
-cd argononed
-git switch 0.3.x
-# cd OS
-# ln -s opensuse opensuse-microos
-# cd ..
-./install
-
 ## Reboot after setup
 cp firstbootreboot.service /etc/systemd/system/
 systemctl enable firstbootreboot.service
@@ -80,3 +56,5 @@ systemctl enable firstbootreboot.service
 ## Clear up mounts
 umount /var
 umount /home
+
+echo "Configured with Combustion" > /etc/issue.d/combustion
