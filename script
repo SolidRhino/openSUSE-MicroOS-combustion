@@ -16,7 +16,7 @@ cp extraconfig.txt /boot/efi/
 cp vconsole.conf /etc/vconsole.conf
 
 ## Disable IPv6
-#cp 90-disableipv6.conf /etc/sysctl.d/
+cp 90-disableipv6.conf /etc/sysctl.d/
 
 ## Enable i2c on boot
 cp 10-i2c.conf /etc/modules-load.d/
