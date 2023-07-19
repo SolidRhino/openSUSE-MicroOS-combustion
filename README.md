@@ -8,5 +8,5 @@ To create the USB use this code
 mkfs.ext4 /dev/sdX
 e2label /dev/sdX combustion
 mount /dev/sdX /mnt
-git clone https://github.com/SolidRhino/openSUSE-MicroOS-combustion.git
+git clone https://github.com/SolidRhino/openSUSE-MicroOS-combustion.git /mnt/combustion/
 ```
