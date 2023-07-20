@@ -4,7 +4,7 @@
 exec > >(exec tee -a /dev/tty0) 2>&1
 
 ## Set hostname
-hostnamectl set-hostname server
+hostnamectl set-hostname silly-dog
 
 ## Set timezone
 timedatectl set-timezone Europe/Amsterdam
@@ -47,7 +47,7 @@ cat server.pub >> /home/server/.ssh/authorized_keys
 systemctl enable sshd.service
 
 ## Add user server to docker group
-usermod -G docker -a server
+#usermod -G docker -a server
 
 ## Reboot after setup
 cp firstbootreboot.service /etc/systemd/system/
